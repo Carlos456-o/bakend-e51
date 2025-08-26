@@ -2,9 +2,11 @@
   "name": "bakend_ferreteria_carlos_oporta_2025",
   "version": "1.0.0",
   "description": "Bakend Ferreteria",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Carlos Oporta",
   "license": "ISC",
@@ -14,4 +16,5 @@
     "express": "^5.1.0",
     "mysql2": "^3.14.3"
   }
+
 }

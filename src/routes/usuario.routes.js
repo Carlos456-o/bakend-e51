@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerUsuarios } from "../controllers/usuario.controller.js";
+import { obtenerUsuarios, obtenerUsuario } from "../controllers/usuario.controller.js";
 
 const router = Router();
 
@@ -8,3 +8,6 @@ const router = Router();
 router.get("/usuarios", obtenerUsuarios);
 
 export default router;
+
+// Ruta para obtenr un usuario por su ID
+router.get("/usuario/:id_usuario", obtenerUsuario);

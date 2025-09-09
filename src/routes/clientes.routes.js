@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerClientes } from "../controllers/clientes.controller.js";
+import { obtenerClientes, obtenerCliente } from "../controllers/clientes.controller.js";
 
 const router = Router();
 
@@ -9,3 +9,6 @@ router.get("/clientes", obtenerClientes);
 
 export default router;
 // Note: The function name and the route path should be consistent with the functionality they provide.
+
+// Ruta para obtener un cliente por su ID
+router.get("/cliente/:id_cliente", obtenerCliente);

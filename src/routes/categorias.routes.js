@@ -1,6 +1,5 @@
-
 import { Router } from "express";
-import { obtenerCategorias } from "../controllers/categorias.controller.js";
+import { obtenerCategorias,obtenerCategoria } from "../controllers/categorias.controller.js";
 
 const router = Router();
 
@@ -8,3 +7,6 @@ const router = Router();
 router.get("/categorias", obtenerCategorias);
 
 export default router;
+
+// Ruta para obtenr una categoria por su ID
+router.get("/categoria/:id_categorias", obtenerCategoria);

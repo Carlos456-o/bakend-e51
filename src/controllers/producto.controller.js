@@ -54,7 +54,7 @@
 
 
   // Eliminar un detalle de compra por su ID
-export const eliminarProductos = async (req, res) => {
+export const eliminarProducto = async (req, res) => {
   try {
     const id_producto = req.params.id_producto;
     const [result] = await pool.query(

@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerClientes, obtenerCliente, registrarCliente,eliminarClientes } from "../controllers/clientes.controller.js";
+import { obtenerClientes, obtenerCliente, registrarCliente,eliminarCliente } from "../controllers/clientes.controller.js";
 
 const router = Router();
 

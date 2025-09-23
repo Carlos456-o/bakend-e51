@@ -62,7 +62,7 @@ export const registrarCliente = async (req, res) => {
 
 
 // Eliminar una categoría por su ID
-export const eliminarClientes = async (req, res) => {
+export const eliminarCliente = async (req, res) => {
   try {
     const id_cliente = req.params.id_cliente;
     const [result] = await pool.query(

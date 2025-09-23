@@ -59,3 +59,29 @@ export const registrarCliente = async (req, res) => {
     });
   }
 };
+
+
+// Eliminar una categoría por su ID
+export const eliminarClientes = async (req, res) => {
+  try {
+    const id_cliente = req.params.id_cliente;
+    const [result] = await pool.query(
+      'DELETE FROM Clientes WHERE id_cliente = ?',
+      [id_cliente]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar la categoria. El ID ${id_cliente} no fue encontrado.`
+      });
+    }
+
+    // Respuesta sin contenido para indicar éxito
+    res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar el cliente.',
+      error: error
+    });
+  }
+};

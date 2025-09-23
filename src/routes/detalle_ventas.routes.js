@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerDetallesCompras,obtenerDetalleCompra, registrarDetalleCompra } from "../controllers/Detalles_compras.controller.js";
+import { obtenerDetallesCompras,obtenerDetalleCompra, registrarDetalleCompra, eliminarDetalleCompra } from "../controllers/Detalles_compras.controller.js";
 
 const router = Router();
 
@@ -12,5 +12,8 @@ router.get("/detallecompra/:id_detalle_compra", obtenerDetalleCompra);
 
 // Ruta para registrar un nuevo Detalle de Compra
 router.post('/registrardetallecompra', registrarDetalleCompra);
+
+//ruta para eliminar un detalle de compra por su ID
+router.delete('/eliminardetallecompra/:id_detalle_compra', eliminarDetalleCompra);
 
 export default router;

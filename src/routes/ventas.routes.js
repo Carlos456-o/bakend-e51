@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerVentas, obtenerVenta, registrarVenta, eliminarVenta  } from "../controllers/ventas.controller.js";
+import { obtenerVentas, obtenerVenta, registrarVenta, eliminarVenta , actualizarVenta } from "../controllers/ventas.controller.js";
 
 const router = Router();
 
@@ -15,5 +15,8 @@ router.post('/registrarventa', registrarVenta);
 
 //ruta para eliminar una venta por su ID
 router.delete('/eliminarventa/:id_venta', eliminarVenta);
+
+// Ruta para actualizar una venta por su ID
+router.put('/actualizarventa/:id_venta', actualizarVenta);
 
 export default router;

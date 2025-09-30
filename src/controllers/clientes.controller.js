@@ -85,3 +85,34 @@ export const eliminarCliente = async (req, res) => {
     });
   }
 };
+
+// Actualizar una categoría por su ID
+export const actualizarCliente = async (req, res) => {
+  try { 
+    const id_cliente = req.params.id_cliente;
+    const { primer_nombre
+      , segundo_nombre, 
+      primer_apellido,
+      segundo_apellido, telefono
+      , direccion,
+      cedula } = req.body;
+    const [result] = await pool.query(
+      'UPDATE clientes SET primer_nombre = IFNULL(?, primer_nombre), segundo_nombre = IFNULL(?, segundo_nombre), primer_apellido = IFNULL(?, primer_apellido), segundo_apellido = IFNULL(?, segundo_apellido), telefono = IFNULL(?, telefono), direccion = IFNULL(?, direccion), cedula = IFNULL(?, cedula) WHERE id_cliente = ?',
+      [primer_nombre
+        , segundo_nombre, primer_apellido, segundo_apellido, telefono, direccion, cedula, id_cliente]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al actualizar la categoria. El ID ${id_cliente} no fue encontrado.`,
+      });
+    }
+    res.status(200).json({
+    mensaje: `Cliente con ID ${id_cliente} actualizada correctamente.`
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar el cliente.',
+      error: error
+    });
+  }
+};

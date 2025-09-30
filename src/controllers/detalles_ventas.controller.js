@@ -78,3 +78,29 @@ export const eliminarDetalleVenta = async (req, res) => {
     });
   }
 };
+
+
+//Actualizar un detalle de venta por su ID
+export const actualizarDetalleVenta = async (req, res) => {
+  try {
+    const id_detalle_venta = req.params.id_detalle_venta;
+    const { id_venta, id_producto, cantidad, precio_unitario } = req.body;
+    const [result] = await pool.query(
+      'UPDATE detalles_ventas SET id_venta = ?, id_producto = ?, cantidad = ?, precio_unitario = ? WHERE id_detalle_venta = ?',
+      [id_venta, id_producto, cantidad, precio_unitario, id_detalle_venta]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al actualizar el detalle venta. El ID ${id_detalle_venta} no fue encontrado.`,
+      });
+    }
+    res.status(200).json({
+      mensaje: `Detalle de venta con ID ${id_detalle_venta} actualizada correctamente.`
+    });
+  }catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar el detalle venta.',
+      error: error
+    });
+  }
+};

@@ -1,10 +1,10 @@
--- Definicion de la base de datos
+-- Definición de la base de datos
 CREATE DATABASE ferreteria_bd;
 USE ferreteria_bd;
 
--- Definicion de las tablas
+-- Definición de las tablas
 
--- Tabla Clientes
+-- Tabla Clientes: almacena información de los clientes
 CREATE TABLE Clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     primer_nombre VARCHAR(20),
@@ -16,33 +16,33 @@ CREATE TABLE Clientes (
     cedula VARCHAR(14)
 );
 
--- Tabla Empleados
+-- Tabla Empleados: almacena información de los empleados
 CREATE TABLE Empleados (
     id_empleado INT AUTO_INCREMENT PRIMARY KEY,
     primer_nombre VARCHAR(20),
     segundo_nombre VARCHAR(20),
     primer_apellido VARCHAR(20),
     segundo_apellido VARCHAR(20),
-    celular VARCHAR(8),
+    celular VARCHAR(12),
     cargo VARCHAR(20),
     fecha_contratacion DATE
 );
 
--- Tabla Usuarios
+-- Tabla Usuarios: almacena credenciales de acceso
 CREATE TABLE Usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(20),
-    contrasena VARCHAR(20)
+    contraseña VARCHAR(20)
 );
 
--- Tabla Categorias
+-- Tabla Categorias: almacena las categorías de los productos
 CREATE TABLE Categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre_categoria VARCHAR(20),
     descripcion_categoria VARCHAR(100)
 );
 
--- Tabla Productos
+-- Tabla Productos: almacena información de los productos disponibles
 CREATE TABLE Productos (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre_producto VARCHAR(20),
@@ -53,7 +53,7 @@ CREATE TABLE Productos (
     imagen LONGTEXT
 );
 
--- Tabla Compras
+-- Tabla Compras: registra las compras realizadas por la ferretería
 CREATE TABLE Compras (
     id_compra INT AUTO_INCREMENT PRIMARY KEY,
     id_empleado INT,
@@ -61,7 +61,7 @@ CREATE TABLE Compras (
     total_compra FLOAT
 );
 
--- Tabla Detalles_Compras
+-- Tabla Detalles_Compras: detalla los productos adquiridos en cada compra
 CREATE TABLE Detalles_Compras (
     id_detalle_compra INT AUTO_INCREMENT PRIMARY KEY,
     id_compra INT,
@@ -70,16 +70,16 @@ CREATE TABLE Detalles_Compras (
     precio_unitario FLOAT
 );
 
--- Tabla Ventas
+-- Tabla Ventas: registra las ventas realizadas
 CREATE TABLE Ventas (
     id_venta INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT,
     id_empleado INT,
-    fecha_venta DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_venta DATETIME,
     total_venta FLOAT
 );
 
--- Tabla Detalles_Ventas
+-- Tabla Detalles_Ventas: detalla los productos vendidos en cada venta
 CREATE TABLE Detalles_Ventas (
     id_detalle_venta INT AUTO_INCREMENT PRIMARY KEY,
     id_venta INT,
@@ -90,39 +90,62 @@ CREATE TABLE Detalles_Ventas (
 
 -- Relaciones entre tablas con ALTER TABLE
 
--- Relacion Productos -> Categorias
+-- Relación Productos -> Categorias
 ALTER TABLE Productos
-ADD CONSTRAINT FK_Productos_Categorias 
-FOREIGN KEY (id_categoria) REFERENCES Categorias (id_categoria);
+ADD CONSTRAINT fk_categoria_producto FOREIGN KEY (id_categoria) REFERENCES Categorias (id_categoria);
 
--- Relacion Compras -> Empleados
+-- Relación Compras -> Empleados
 ALTER TABLE Compras
-ADD CONSTRAINT FK_Compras_Empleados 
-FOREIGN KEY (id_empleado) REFERENCES Empleados (id_empleado);
+ADD CONSTRAINT fk_empleado_compra FOREIGN KEY (id_empleado) REFERENCES Empleados (id_empleado);
 
--- Relacion Ventas -> Clientes
+-- Relación Ventas -> Clientes
 ALTER TABLE Ventas
-ADD CONSTRAINT FK_Ventas_Clientes 
-FOREIGN KEY (id_cliente) REFERENCES Clientes (id_cliente);
+ADD CONSTRAINT fk_cliente_venta FOREIGN KEY (id_cliente) REFERENCES Clientes (id_cliente);
 
--- Relacion Ventas -> Empleados
+-- Relación Ventas -> Empleados
 ALTER TABLE Ventas
-ADD CONSTRAINT FK_Ventas_Empleados 
-FOREIGN KEY (id_empleado) REFERENCES Empleados (id_empleado);
+ADD CONSTRAINT fk_empleado_venta FOREIGN KEY (id_empleado) REFERENCES Empleados (id_empleado);
 
--- Relacion Detalles_Compras -> Compras y Productos
+-- Configuración de fecha_venta por defecto
+ALTER TABLE Ventas
+MODIFY COLUMN fecha_venta DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- Relación Detalles_Compras -> Compras y Productos
 ALTER TABLE Detalles_Compras
-ADD CONSTRAINT FK_Compras_Detalles_Compras FOREIGN KEY (id_compra)
-REFERENCES Compras (id_compra) ON DELETE CASCADE,
-ADD CONSTRAINT FK_Productos_Detalles_Compras
-FOREIGN KEY (id_producto) REFERENCES Productos (id_producto);
+ADD CONSTRAINT fk_compra_detalle FOREIGN KEY (id_compra) REFERENCES Compras (id_compra),
+ADD CONSTRAINT fk_producto_compra FOREIGN KEY (id_producto) REFERENCES Productos (id_producto);
 
--- Relacion Detalles_Ventas -> Ventas y Productos
+-- Relación Detalles_Ventas -> Ventas y Productos
 ALTER TABLE Detalles_Ventas
-ADD CONSTRAINT FK_Ventas_Detalles_Ventas
-FOREIGN KEY (id_venta) REFERENCES Ventas (id_venta) ON DELETE CASCADE,
-ADD CONSTRAINT FK_Productos_Detalles_Ventas
-FOREIGN KEY (id_producto) REFERENCES Productos (id_producto);
+ADD CONSTRAINT fk_venta_detalle FOREIGN KEY (id_venta) REFERENCES Ventas (id_venta),
+ADD CONSTRAINT fk_producto_venta FOREIGN KEY (id_producto) REFERENCES Productos (id_producto);
+
+-- Eliminar la clave foránea actual fk_venta_detalle:
+
+USE ferreteria_bd;
+
+ALTER TABLE Detalles_Ventas
+DROP FOREIGN KEY fk_venta_detalle;
+
+
+-- Volver a crear la clave foránea con ON DELETE CASCADE para fk_venta_detalle:
+
+ALTER TABLE Detalles_Ventas
+ADD CONSTRAINT fk_venta_detalle FOREIGN KEY (id_venta) REFERENCES Ventas (id_venta) ON DELETE CASCADE;
+
+
+-- Eliminar la clave foránea actual fk_compra_detalle:
+
+USE ferreteria_bd;
+
+ALTER TABLE Detalles_Compras
+DROP FOREIGN KEY fk_compra_detalle;
+
+
+-- Volver a crear la clave foránea con ON DELETE CASCADE para fk_venta_detalle:
+
+ALTER TABLE Detalles_Compras
+ADD CONSTRAINT fk_compra_detalle FOREIGN KEY (id_compra) REFERENCES Compras (id_compra) ON DELETE CASCADE;
 
 
 -- Inserciones lógicas secuenciales

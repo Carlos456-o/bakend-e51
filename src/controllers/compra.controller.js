@@ -77,13 +77,15 @@ export const eliminarCompra = async (req, res) => {
   }
 };
 
-// Actualizar una compra por su ID
-export const actualizarCompra = async (req, res) => {
+
+
+//Controlador para actualizar parcialmente una compra por su ID
+export const actualizarParcialCompra = async (req, res) => {
   try {
     const id_compra = req.params.id_compra;
     const { id_empleado, fecha_compra, total_compra } = req.body;
     const [result] = await pool.query(
-      'UPDATE Compras SET id_empleado = ?, fecha_compra = ?, total_compra = ? WHERE id_compra = ?',
+      'UPDATE Compras SET id_empleado = IFNULL(?, id_empleado), fecha_compra = IFNULL(?, fecha_compra), total_compra = IFNULL(?, total_compra) WHERE id_compra = ?',
       [id_empleado, fecha_compra, total_compra, id_compra]
     );
     if (result.affectedRows === 0) {

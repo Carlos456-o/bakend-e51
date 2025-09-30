@@ -86,12 +86,14 @@ export const eliminarCliente = async (req, res) => {
   }
 };
 
-// Actualizar una categoría por su ID
-export const actualizarCliente = async (req, res) => {
-  try { 
+
+
+//Controlador para actualizar un cliente por su ID
+export const actualizarClientePatch = async (req, res) => {
+  try {
     const id_cliente = req.params.id_cliente;
     const { primer_nombre
-      , segundo_nombre, 
+      , segundo_nombre,
       primer_apellido,
       segundo_apellido, telefono
       , direccion,
@@ -109,7 +111,8 @@ export const actualizarCliente = async (req, res) => {
     res.status(200).json({
     mensaje: `Cliente con ID ${id_cliente} actualizada correctamente.`
     });
-  } catch (error) {
+  }
+  catch (error) {
     return res.status(500).json({
       mensaje: 'Ha ocurrido un error al actualizar el cliente.',
       error: error

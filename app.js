@@ -7,11 +7,11 @@ import rutasCategorias from "./src/routes/categorias.routes.js";
 import rutasProducto from "./src/routes/producto.routes.js";
 import rutasUsuario from "./src/routes/usuario.routes.js";
 import rutasVentas from "./src/routes/ventas.routes.js";
-import rutasDetallesVentas from "./src/routes/detalle_ventas.routes.js"; 
 import rutasCompras from "./src/routes/compras.routes.js";
-import rutasDetallesCompras from "./src/routes/detalles_compras.routes.js";
 import rutasEmpleados from "./src/routes/empleado.routes.js";
 import rutasClientes from "./src/routes/clientes.routes.js";
+import rutasDetallesVentas from "./src/routes/detalles_ventas.routes.js";
+import rutasDetallesCompras from "./src/routes/detalle_compras.routes.js";
 
 // Crear la aplicación de Express
 const app = express();

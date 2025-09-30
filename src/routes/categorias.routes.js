@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerCategorias,obtenerCategoria , registrarCategoria, eliminarCategoria, actualizarCategoria } from "../controllers/categorias.controller.js";
+import { obtenerCategorias,obtenerCategoria , registrarCategoria, eliminarCategoria , actualizarCategortaPatch } from "../controllers/categorias.controller.js";
 
 const router = Router();
 
@@ -15,7 +15,8 @@ router.post('/registrarcategoria', registrarCategoria);
 //Ruta para eliminar una categoría por su ID
 router.delete('/eliminarcategoria/:id_categoria', eliminarCategoria);
 
-// Ruta para actualizar una categoría por su ID
-router.put('/actualizarcategoria/:id_categoria', actualizarCategoria);
+
+// Ruta para actualizar parcialmente una categoría por su ID
+router.patch('/actualizarcategoria/:id_categoria', actualizarCategortaPatch);
 
 export default router;

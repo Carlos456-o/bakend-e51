@@ -79,13 +79,14 @@ export const eliminarProducto = async (req, res) => {
 };
 
 
-// Actualizar un producto por su ID
-export const actualizarProducto = async (req, res) => {
+
+//Controlador para actualizar parcialmente un producto por su ID
+export const actualizarProductoPatch = async (req, res) => {
   try {
     const id_producto = req.params.id_producto;
     const { nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen } = req.body;
     const [result] = await pool.query(
-      'UPDATE productos SET nombre_producto = ?, descripcion_producto = ?, id_categoria = ?, precio_unitario = ?, stock = ?, imagen = ? WHERE id_producto = ?',
+      'UPDATE productos SET nombre_producto = IFNULL(?, nombre_producto), descripcion_producto = IFNULL(?, descripcion_producto), id_categoria = IFNULL(?, id_categoria), precio_unitario = IFNULL(?, precio_unitario), stock = IFNULL(?, stock), imagen = IFNULL(?, imagen) WHERE id_producto = ?',
       [nombre_producto, descripcion_producto, id_categoria, precio_unitario, stock, imagen, id_producto]
     );
     if (result.affectedRows === 0) {
@@ -96,11 +97,10 @@ export const actualizarProducto = async (req, res) => {
     res.status(200).json({
       mensaje: `Producto con ID ${id_producto} actualizada correctamente.`
     });
-  }
-  catch (error) {
+  } catch (error) {
     return res.status(500).json({
       mensaje: 'Ha ocurrido un error al actualizar el producto.',
       error: error
     });
-  }
+  } 
 };

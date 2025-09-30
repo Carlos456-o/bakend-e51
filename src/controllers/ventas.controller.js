@@ -77,13 +77,15 @@ export const eliminarVenta = async (req, res) => {
   }
 };
 
-//Actualizar una venta por su ID
-export const actualizarVenta = async (req, res) => {
+
+
+//Controlador para actualizar parcialmente una venta por su ID
+export const actualizarParcialVenta = async (req, res) => {
   try {
     const id_venta = req.params.id_venta;
     const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
     const [result] = await pool.query(
-      'UPDATE ventas SET id_cliente = ?, id_empleado = ?, fecha_venta = ?, total_venta = ? WHERE id_venta = ?',
+      'UPDATE ventas SET id_cliente = IFNULL(?, id_cliente), id_empleado = IFNULL(?, id_empleado), fecha_venta = IFNULL(?, fecha_venta), total_venta = IFNULL(?, total_venta) WHERE id_venta = ?',
       [id_cliente, id_empleado, fecha_venta, total_venta, id_venta]
     );
     if (result.affectedRows === 0) {

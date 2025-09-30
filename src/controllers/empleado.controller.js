@@ -78,13 +78,15 @@ export const eliminarEmpleado = async (req, res) => {
   }
 };
 
-//Actualizar un empleado por su ID
-export const actualizarEmpleado = async (req, res) => {
+
+
+//Controlador para actualizar parcialmente un empleado por su ID
+export const actualizarParcialEmpleado = async (req, res) => {
   try {
     const id_empleado = req.params.id_empleado;
     const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion} = req.body;
     const [result] = await pool.query(
-      "UPDATE empleados SET primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?, celular = ?, cargo = ?, fecha_contratacion = ? WHERE id_empleado = ?",
+      "UPDATE empleados SET primer_nombre = IFNULL(?, primer_nombre), segundo_nombre = IFNULL(?, segundo_nombre), primer_apellido = IFNULL(?, primer_apellido), segundo_apellido = IFNULL(?, segundo_apellido), celular = IFNULL(?, celular), cargo = IFNULL(?, cargo), fecha_contratacion = IFNULL(?, fecha_contratacion) WHERE id_empleado = ?",
       [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion, id_empleado]
     );
     if (result.affectedRows === 0) {

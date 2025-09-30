@@ -78,13 +78,15 @@ export const eliminarUsuario = async (req, res) => {
   }
 };
 
-//Actualizar usuario por su ID
-  export const actualizarUsuario = async (req, res) => {
+
+  
+  //Controlador para actualizar parcialmente un usuario por su ID
+  export const actualizarParcialUsuario = async (req, res) => {
     try {
       const id_usuario = req.params.id_usuario;
       const { usuario, contrasena } = req.body;
       const [result] = await pool.query(
-        "UPDATE usuarios SET usuario = ?, contrasena = ? WHERE id_usuario = ?",
+        "UPDATE usuarios SET usuario = IFNULL(?, usuario), contrasena = IFNULL(?, contrasena) WHERE id_usuario = ?",
         [usuario, contrasena, id_usuario]
       );
       if (result.affectedRows === 0) {
@@ -97,9 +99,8 @@ export const eliminarUsuario = async (req, res) => {
       });
     } catch (error) {
       return res.status(500).json({
-        mensaje: "Ha ocurrido un error al actualizar el usuario.",
+        mensaje: "Ha ocurrido un error al actualizar el usuario.",  
         error: error,
       });
     }
   };
-  

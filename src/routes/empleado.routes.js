@@ -1,6 +1,6 @@
 
 import { Router } from "express";
-import { obtenerEmpleados, obtenerEmpleado,registrarEmpleado, eliminarEmpleado, actualizarEmpleado } from "../controllers/empleado.controller.js";
+import { obtenerEmpleados, obtenerEmpleado,registrarEmpleado, eliminarEmpleado, actualizarParcialEmpleado } from "../controllers/empleado.controller.js";
 
 const router = Router();
 
@@ -17,6 +17,6 @@ router.post('/registrarempleado', registrarEmpleado);
 router.delete('/eliminarempleado/:id_empleado', eliminarEmpleado);
 
 // Ruta para actualizar un empleado por su ID
-router.put('/actualizarempleado/:id_empleado', actualizarEmpleado);
+router.put('/actualizarempleado/:id_empleado', actualizarParcialEmpleado);
 
 export default router;

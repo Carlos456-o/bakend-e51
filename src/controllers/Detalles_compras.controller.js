@@ -78,13 +78,15 @@ export const eliminarDetalleCompra = async (req, res) => {
   }
 };
 
-// Actualizar un detalle de compra por su ID
-export const actualizarDetalleCompra = async (req, res) => {
+
+
+//Controlador para actualizar parcialmente un detalle de compra por su ID
+export const actualizarParcialDetalleCompra = async (req, res) => {
   try {
     const id_detalle_compra = req.params.id_detalle_compra;
     const { id_compra, id_producto, cantidad, precio_unitario } = req.body;
     const [result] = await pool.query(
-      'UPDATE detalles_compras SET id_compra = ?, id_producto = ?, cantidad = ?, precio_unitario = ? WHERE id_detalle_compra = ?',
+      'UPDATE detalles_compras SET id_compra = IFNULL(?, id_compra), id_producto = IFNULL(?, id_producto), cantidad = IFNULL(?, cantidad), precio_unitario = IFNULL(?, precio_unitario) WHERE id_detalle_compra = ?',
       [id_compra, id_producto, cantidad, precio_unitario, id_detalle_compra]
     );
     if (result.affectedRows === 0) {
@@ -102,4 +104,3 @@ export const actualizarDetalleCompra = async (req, res) => {
     });
   }
 };
-

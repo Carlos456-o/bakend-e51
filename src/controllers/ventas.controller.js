@@ -78,28 +78,23 @@ export const eliminarVenta = async (req, res) => {
 };
 
 
-
-//Controlador para actualizar parcialmente una venta por su ID
-export const actualizarParcialVenta = async (req, res) => {
+// Controlador para actualizar parcialmente un Ventas por su ID
+export const actualizarVentasPatch = async (req, res) => {
   try {
-    const id_venta = req.params.id_venta;
-    const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
+    const { id_venta } = req.params;
+    const datos = req.body;
+
     const [result] = await pool.query(
-      'UPDATE ventas SET id_cliente = IFNULL(?, id_cliente), id_empleado = IFNULL(?, id_empleado), fecha_venta = IFNULL(?, fecha_venta), total_venta = IFNULL(?, total_venta) WHERE id_venta = ?',
-      [id_cliente, id_empleado, fecha_venta, total_venta, id_venta]
+      'UPDATE Ventas SET ? WHERE id_venta = ?',
+      [datos, id_venta]
     );
+
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        mensaje: `Error al actualizar la venta. El ID ${id_venta} no fue encontrado.`,
-      });
+      return res.status(404).json({ mensaje: `Ventas con ID ${id_venta} no encontrada.` });
     }
-    res.status(200).json({
-      mensaje: `Venta con ID ${id_venta} actualizada correctamente.`
-    });
+
+    res.status(200).json({ mensaje: `Ventas con ID ${id_venta} actualizada.` });
   } catch (error) {
-    return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al actualizar la venta.',
-      error: error
-    });
+    res.status(500).json({ mensaje: 'Error al actualizar el Ventas.', error });
   }
 };

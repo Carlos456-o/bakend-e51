@@ -80,27 +80,23 @@ export const eliminarDetalleCompra = async (req, res) => {
 
 
 
-//Controlador para actualizar parcialmente un detalle de compra por su ID
-export const actualizarParcialDetalleCompra = async (req, res) => {
+// Controlador para actualizar parcialmente una Detalles_Compras por su ID
+export const actualizarDetallesComprasPatch = async (req, res) => {
   try {
-    const id_detalle_compra = req.params.id_detalle_compra;
-    const { id_compra, id_producto, cantidad, precio_unitario } = req.body;
+    const { id_detalle_compra } = req.params;
+    const datos = req.body;
+
     const [result] = await pool.query(
-      'UPDATE detalles_compras SET id_compra = IFNULL(?, id_compra), id_producto = IFNULL(?, id_producto), cantidad = IFNULL(?, cantidad), precio_unitario = IFNULL(?, precio_unitario) WHERE id_detalle_compra = ?',
-      [id_compra, id_producto, cantidad, precio_unitario, id_detalle_compra]
+      'UPDATE Detalles_Compras SET ? WHERE id_detalle_compra = ?',
+      [datos, id_detalle_compra]
     );
+
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        mensaje: `Error al actualizar el detalle compra. El ID ${id_detalle_compra} no fue encontrado.`,
-      });
+      return res.status(404).json({ mensaje: `Detalles_Compras con ID ${id_detalle_compra} no encontrada.` });
     }
-    res.status(200).json({
-      mensaje: `Detalle de compra con ID ${id_detalle_compra} actualizada correctamente.`
-    });
+
+    res.status(200).json({ mensaje: `Detalles_Compras con ID ${id_detalle_compra} actualizada.` });
   } catch (error) {
-    return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al actualizar el detalle compra.',
-      error: error
-    });
+    res.status(500).json({ mensaje: 'Error al actualizar el Detalles_Compras.', error });
   }
 };

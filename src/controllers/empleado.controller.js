@@ -80,27 +80,23 @@ export const eliminarEmpleado = async (req, res) => {
 
 
 
-//Controlador para actualizar parcialmente un empleado por su ID
-export const actualizarParcialEmpleado = async (req, res) => {
+// Controlador para actualizar parcialmente una Empleados por su ID
+export const actualizarEmpleadosPatch = async (req, res) => {
   try {
-    const id_empleado = req.params.id_empleado;
-    const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion} = req.body;
+    const { id_empleado } = req.params;
+    const datos = req.body;
+
     const [result] = await pool.query(
-      "UPDATE empleados SET primer_nombre = IFNULL(?, primer_nombre), segundo_nombre = IFNULL(?, segundo_nombre), primer_apellido = IFNULL(?, primer_apellido), segundo_apellido = IFNULL(?, segundo_apellido), celular = IFNULL(?, celular), cargo = IFNULL(?, cargo), fecha_contratacion = IFNULL(?, fecha_contratacion) WHERE id_empleado = ?",
-      [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion, id_empleado]
+      'UPDATE Empleados SET ? WHERE id_empleado = ?',
+      [datos, id_empleado]
     );
+
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        mensaje: `Error al actualizar el empleado. El ID ${id_empleado} no fue encontrado.`,
-      });
+      return res.status(404).json({ mensaje: `Empleados con ID ${id_empleado} no encontrada.` });
     }
-    res.status(200).json({
-      mensaje: `Empleado con ID ${id_empleado} actualizado correctamente.`
-    });
+
+    res.status(200).json({ mensaje: `Empleados con ID ${id_empleado} actualizada.` });
   } catch (error) {
-    return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al actualizar el empleado.',
-      error: error
-    });
+    res.status(500).json({ mensaje: 'Error al actualizar el Empleados.', error });
   }
 };

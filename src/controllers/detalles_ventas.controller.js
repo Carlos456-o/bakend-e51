@@ -80,28 +80,23 @@ export const eliminarDetalleVenta = async (req, res) => {
 };
 
 
+// Controlador para actualizar parcialmente una Detalles_Ventas por su ID
+export const actualizarDetallesVentasPatch = async (req, res) => {
+  try {
+    const { id_detalle_venta } = req.params;
+    const datos = req.body;
 
-//Controlador para actualizar parcialmente un detalle de venta por su ID  
-export const actualizarParcialDetalleVenta = async (req, res) => {  
-    try {
-      const id_detalle_venta = req.params.id_detalle_venta;
-      const { id_venta, id_producto, cantidad, precio_unitario } = req.body;
-      const [result] = await pool.query(
-        'UPDATE detalles_ventas SET id_venta = IFNULL(?, id_venta), id_producto = IFNULL(?, id_producto), cantidad = IFNULL(?, cantidad), precio_unitario = IFNULL(?, precio_unitario) WHERE id_detalle_venta = ?',
-        [id_venta, id_producto, cantidad, precio_unitario, id_detalle_venta]
-      );
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          mensaje: `Error al actualizar el detalle venta. El ID ${id_detalle_venta} no fue encontrado.`,
-        });
-      }
-      res.status(200).json({
-        mensaje: `Detalle de venta con ID ${id_detalle_venta} actualizada correctamente.`
-      });
-    } catch (error) {
-      return res.status(500).json({
-        mensaje: 'Ha ocurrido un error al actualizar el detalle venta.',
-        error: error
-      });
+    const [result] = await pool.query(
+      'UPDATE Detalles_Ventas SET ? WHERE id_detalle_venta = ?',
+      [datos, id_detalle_venta]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ mensaje: `Detalles_Ventas con ID ${id_detalle_venta} no encontrada.` });
     }
-  };
+
+    res.status(200).json({ mensaje: `Detalles_Ventas con ID ${id_detalle_venta} actualizada.` });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar el Detalles_Ventas.', error });
+  }
+};

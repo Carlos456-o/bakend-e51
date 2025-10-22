@@ -3,7 +3,7 @@
   // Obtener todas las empleados
   export const obtenerEmpleados = async (req, res) => {
     try {
-      const [result] = await pool.query("SELECT * FROM empleados");
+      const [result] = await pool.query("SELECT * FROM Empleados");
       res.json(result);
     } catch (error) {
       return res.status(500).json({
@@ -18,7 +18,7 @@
     try {
       const id_empleado = req.params.id_empleado;
       const [result] = await pool.query(
-        "SELECT * FROM empleados WHERE id_empleado= ?",
+        "SELECT * FROM Empleados WHERE id_empleado= ?",
         [id_empleado]
       );
       if (result.length <= 0) {
@@ -40,7 +40,7 @@
     try {
       const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion} = req.body;
       const [result] = await pool.query(
-        'INSERT INTO empleados (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO Empleados (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion) VALUES (?, ?, ?, ?, ?, ?, ?)',
         [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion]
       );
       res.status(201).json({ id_empleado: result.insertId });

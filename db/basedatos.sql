@@ -153,7 +153,7 @@ ADD CONSTRAINT fk_compra_detalle FOREIGN KEY (id_compra) REFERENCES Compras (id_
 
 -- Inserciones en Categorias (independiente)
 INSERT INTO Categorias (nombre_categoria, descripcion_categoria) VALUES
-('Herramientas', 'Herramientas manuales y eléctricas'),
+('Heramientas', 'Herramientas manuales y eléctricas'),
 ('Fijaciones', 'Tornillos, clavos y anclajes'),
 ('Pinturas', 'Pinturas y accesorios para pintar');
 
@@ -209,7 +209,7 @@ INSERT INTO Detalles_Ventas (id_venta, id_producto, cantidad, precio_unitario) V
 
 -- Actualizar Categorias (id_categoria = 1)
 UPDATE Categorias
-SET nombre_categoria = 'Herramientas Manuales', descripcion_categoria = 'Herramientas manuales exclusivamente'
+SET nombre_categoria = 'HerramientasManuales', descripcion_categoria = 'Herramientas manuales exclusivamente'
 WHERE id_categoria = 1;
 
 -- Actualizar Clientes (id_cliente = 1)

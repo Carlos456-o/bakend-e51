@@ -3,7 +3,7 @@
   // Obtener todas las usuarios
   export const obtenerUsuarios = async (req, res) => {
     try {
-      const [result] = await pool.query("SELECT * FROM usuarios");
+      const [result] = await pool.query("SELECT * FROM Usuarios");
       res.json(result);
     } catch (error) {
       return res.status(500).json({
@@ -18,7 +18,7 @@
     try {
       const id_usuario = req.params.id_usuario;
       const [result] = await pool.query(
-        "SELECT * FROM usuarios WHERE id_usuario= ?",
+        "SELECT * FROM Usuarios WHERE id_usuario= ?",
         [id_usuario]
       );
       if (result.length <= 0) {
@@ -40,7 +40,7 @@
     try {
       const { usuario, contrasena } = req.body;
       const [result] = await pool.query(
-        'INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)',
+        'INSERT INTO Usuarios (usuario, contrasena) VALUES (?, ?)',
         [usuario, contrasena]
       );
       res.status(201).json({ id_usuario: result.insertId });

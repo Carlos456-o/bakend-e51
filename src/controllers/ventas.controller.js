@@ -3,7 +3,7 @@
   // Obtener todas las ventas
   export const obtenerVentas = async (req, res) => {
     try {
-      const [result] = await pool.query("SELECT * FROM ventas");
+      const [result] = await pool.query("SELECT * FROM Ventas");
       res.json(result);
     } catch (error) {
       return res.status(500).json({
@@ -18,7 +18,7 @@
     try {
       const id_venta = req.params.id_venta;
       const [result] = await pool.query(
-        "SELECT * FROM ventas WHERE id_venta= ?",
+        "SELECT * FROM Ventas WHERE id_venta= ?",
         [id_venta]
       );
       if (result.length <= 0) {
@@ -39,7 +39,7 @@
     try {
       const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
       const [result] = await pool.query(
-        'INSERT INTO ventas (id_cliente, id_empleado, fecha_venta, total_venta) VALUES (?, ?, ?, ?)',
+        'INSERT INTO Ventas (id_cliente, id_empleado, fecha_venta, total_venta) VALUES (?, ?, ?, ?)',
         [id_cliente, id_empleado, fecha_venta, total_venta]
       );
       res.status(201).json({ id_venta: result.insertId });

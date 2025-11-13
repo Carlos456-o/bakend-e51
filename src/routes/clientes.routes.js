@@ -17,6 +17,6 @@ router.post('/registrarcliente', registrarCliente);
 router.delete('/eliminarcliente/:id_cliente', eliminarCliente);
 
 // Ruta para actualizar parcialmente un cliente por su ID
-router.patch('/actualizarcliente/:id_cliente', actualizarClientePatch);
+router.put('/actualizarcliente/:id_cliente', actualizarClientePatch);
 
 export default router;

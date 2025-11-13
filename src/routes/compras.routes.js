@@ -17,6 +17,6 @@ router.post('/registrarcompra', registrarCompra);
 router.delete('/eliminarcompra/:id_compra', eliminarCompra);
 
 // Ruta para actualizar parcialmente una compra por su ID
-router.patch('/actualizarcompra/:id_compra', actualizarComprasPatch);
+router.put('/actualizarcompra/:id_compra', actualizarComprasPatch);
 
 export default router;

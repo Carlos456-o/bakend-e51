@@ -100,3 +100,33 @@ export const actualizarUsuariosPatch = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al actualizar el Usuarios.', error });
   }
 };
+
+// Verificar usuario para login
+export const verificarUsuario = async (req, res) => {
+  try {
+    const { usuario, contrasena } = req.body;
+
+    if (!usuario || !contrasena) {
+      return res.status(400).json({
+        mensaje: "Debe enviar usuario y contrasena."
+      });
+    }
+
+    const [result] = await pool.query(
+      'SELECT * FROM Usuarios WHERE usuario = ? AND contraseña = ?',
+      [usuario, contrasena]
+    );
+
+    if (result.length > 0) {
+      return res.json(true);   // Usuario correcto
+    } else {
+      return res.json(false);  // Datos incorrectos
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Error al verificar el usuario.',
+      error
+    });
+  }
+};
